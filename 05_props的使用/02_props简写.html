@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props简写</title>
+</head>
+<body>
+    <div id="app"></div>
+    <div id="app2"></div>
+    <div id="app3"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="../js/prop-types.js"></script>
+
+    <script type="text/babel">
+    // 【props简写】：将对props的限制，都写在类里面
+
+    // 创建组件
+        class Mycomponent extends React.Component{
+
+            // 3.对传入的props进行限制
+                // 限制属性的类型和是否必填
+            static propTypes={
+                name:PropTypes.string.isRequired, //name类型为字符串，且必填
+                age:PropTypes.number, //age类型为数字
+                sex:PropTypes.string, //sex类型为字符串
+                // 对方法的类型限制
+                speak:PropTypes.func
+            }
+            
+            // 限制属性的默认值
+            static defaultProps={
+                age:18,
+                sex:'未知性别'
+            }
+            
+            render(){
+                return (
+                    <ul>
+                        <li onClick={this.speakName}>姓名：{this.props.name}</li>
+                        <li>性别：{this.props.sex}</li>
+                        <li onClick={(e)=>this.props.speak(this.props.age,e)}>年龄：{this.props.age+1}</li>
+                    </ul>
+                )
+            }
+            speakName=()=>{
+                console.log(this)
+                console.log(`我叫${this.props.name}`)
+            }
+        }
+
+       
+
+    // 渲染真实页面
+
+        // 1.普通传值
+        ReactDOM.render(<Mycomponent name='Tom' sex='男' age={18}/>,document.getElementById('app'))
+
+        // 2.批量传值------通过扩展运算符
+        const info={name:'jerry',sex:'女',age:20}
+        ReactDOM.render(<Mycomponent {...info} />,document.getElementById('app2'))
+
+        
+        const info2={name:'张三'}
+        ReactDOM.render(<Mycomponent {...info2} speak={speak} />,document.getElementById('app3'))
+
+        function speak(age,e){
+            console.log('kk',age,e)
+            console.log('我要说话')
+        }
+
+    </script>
+
+</body>
+</html>

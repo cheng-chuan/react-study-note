@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jsx语法</title>
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        let obj = [{name:'kobe',age:12,color:'red'},{name:'mike',age:20,color:'green'}]
+        // 1.创建虚拟dom
+        const vDom = (
+            <ul>
+                {
+                    obj.map(item=>{
+                        return <li style={{background:item.color}} key={item.name}>{item.name}---{item.age}</li>
+                    })
+                }
+            </ul>
+        )
+
+        // 2.渲染真实dom
+        ReactDOM.render(vDom,document.getElementById('app'))
+
+        /*
+        jsx语法规则    
+            1.定义虚拟Dom时，不要写引号
+            2.标签中汇入js表达式时要用{}
+            3.样式的类名指定不要class，要用className
+            4.内联样式，要用style={{key:value}}的形式去写
+            5.只用一个根标签
+            6.标签必须闭合
+            7.标签首字母
+                (1).若小写字母开头，则将该标签转为html中同名元素，若html中无该标签对应的同名元素，则报错
+                (2).若大写字母开头，react就去渲染对应的组件，若组件没有定义，则报错
+        */
+    </script>
+</body>
+</html>

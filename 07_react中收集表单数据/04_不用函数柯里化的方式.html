@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不用柯里化的方式</title>
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Login extends React.Component{
+            // 初始化状态
+            state={
+                userName:'',
+                passWord:''
+            }
+
+            // 将表单信息存到state状态里-----没有运用函数柯里化，直接将event传进来
+            saveFormData=(dataType,event)=>{
+                this.setState({[dataType]:event.target.value})
+            }
+
+            handleSubmit=(event)=>{
+                event.preventDefault()// 禁止表单的默认事件，防止页面刷新
+                const {userName,passWord} = this.state
+                alert(`输入的用户名是：${userName},密码是：${passWord}`)
+            }
+
+            render(){
+                return(
+                    <form onSubmit={this.handleSubmit}>
+                        用户名：<input onChange={(event)=>{this.saveFormData('userName',event)}} type="text" name="userName"/> 
+                        密码：<input onChange={(event)=>{this.saveFormData('passWord',event)}} type="password" name="passWord"/>    
+                        <button>登录</button>
+                    </form>
+                )
+            }
+        }
+
+        // 渲染真实页面
+        ReactDOM.render(<Login/>,document.getElementById('app'))
+    </script>
+
+</body>
+</html>

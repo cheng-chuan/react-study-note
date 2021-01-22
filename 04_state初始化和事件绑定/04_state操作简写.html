@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>state操作简写</title>
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建类式组件
+        class Mycomponent extends React.Component{
+            // 1.在类里面，可以直接添加属性
+            state = {isHot:false}
+
+            render(){
+                return <h1 onClick={this.changeWeather}>今天的天气很{this.state.isHot?'炎热':'凉爽'}！</h1>
+            }
+
+            // 2.自定义方法----需要采用赋值语句的形式+箭头函数(可以直接解决this的指向问题)
+            changeWeather=()=>{
+                const isHot = this.state.isHot
+                this.setState({isHot:!isHot})
+            }
+        }
+
+        // 渲染组件到页面上
+        ReactDOM.render(<Mycomponent/>,document.getElementById('app'))
+
+
+    </script>
+</body>
+</html>

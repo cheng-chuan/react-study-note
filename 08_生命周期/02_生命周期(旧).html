@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期（旧版）</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Count extends React.Component{
+            constructor(props){
+                console.log('Count---constructor')
+                super(props)
+                this.state={count:0}
+            }
+
+            add=()=>{
+                const {count} = this.state
+                this.setState({count:count+1})
+            }
+
+            death=()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById("app"))
+            }
+
+            // 强制更新----不受阀门控制
+            force=()=>{
+                this.forceUpdate()
+            }
+
+            // 在组件将要挂载到页面
+            componentWillMount(){
+                console.log('Count---componentWillMount')
+            }
+
+            // 在组件挂载到页面后
+            componentDidMount(){
+                console.log('Count---componentDidMount')
+            }
+
+            // 在组件卸载之前
+            componentWillUnmount(){
+                console.log('Count---componentWillUnmount')
+            }
+
+            // setState之后，判断时候更新状态----阀门
+            shouldComponentUpdate(){
+                console.log('Count---shouldComponentUpdate')
+                return true
+            }
+
+            // 在组件更新之前
+            componentWillUpdate(){
+                console.log('Count---componentWillUpdate')
+            }
+
+            // 在组件更新之后
+            componentDidUpdate(){
+                console.log('Count---componentDidUpdate')
+            }
+
+            render(){
+                console.log('Count---render')
+                return(
+                    <div>
+                        <h2>当前累加的和为：{this.state.count}</h2>
+                        <button onClick={this.add}>点我+1</button>
+                        <button onClick={this.death}>卸载组件</button>
+                        <button onClick={this.force}>不修改状态，强制更新</button>
+                    </div>
+                )
+            }
+        }
+        
+        // 创建父子组件
+        class Father extends React.Component{
+            state={carName:'奔驰'}
+
+            changeCarName=()=>{
+                this.setState({carName:this.state.carName==='宝马'?'奔驰':'宝马'})
+            }
+
+            render(){
+                return(
+                    <div>
+                        <h2>我是父组件</h2>
+                        <button onClick={this.changeCarName}>更改车名</button>
+                        <Son carName={this.state.carName}/>
+                    </div>
+                )
+            }
+        }
+
+        class Son extends React.Component{
+
+            // 组件将要接收参数
+            componentWillReceiveProps(){
+                console.log('Son---componentWillReceiveProps')
+            }
+
+            render(){
+                return(
+                    <div>
+                        <h2>我是子组件，我的车是{this.props.carName}</h2>
+                    </div>
+                )
+            }
+        }
+        // 渲染组件到真实页面
+        ReactDOM.render(<Father/>,document.getElementById("app"))
+    </script>
+
+</body>
+</html>

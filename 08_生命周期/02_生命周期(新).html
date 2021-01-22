@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生命周期（新版）</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Count extends React.Component{
+            constructor(props){
+                console.log('Count---constructor')
+                super(props)
+                this.state={count:0}
+            }
+
+            add=()=>{
+                const {count} = this.state
+                this.setState({count:count+1})
+            }
+
+            death=()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById("app"))
+            }
+
+            // 强制更新----不受阀门控制
+            force=()=>{
+                this.forceUpdate()
+            }
+
+            // 在组件将要挂载到页面-------已被新版废除
+            // componentWillMount(){
+            //     console.log('Count---componentWillMount')
+            // }
+            
+            // 从props获取派生的状态
+            static getDerivedStateFromProps(props){
+                console.log('getDerivedStateFromProps',props)
+                // 必须返回状态对象，或者null
+                // return props
+                return null
+            }
+
+            // 在组件挂载到页面后
+            componentDidMount(){
+                console.log('Count---componentDidMount')
+            }
+
+            // 在组件卸载之前
+            componentWillUnmount(){
+                console.log('Count---componentWillUnmount')
+            }
+
+            // setState之后，判断时候更新状态----阀门
+            shouldComponentUpdate(){
+                console.log('Count---shouldComponentUpdate')
+                return true
+            }
+
+            // 在组件更新之前-------已被新版废除
+            // componentWillUpdate(){
+            //     console.log('Count---componentWillUpdate')
+            // }
+            
+
+            // 在组件更新之前获取快照
+            getSnapshotBeforeUpdate(props,state){
+                console.log('getSnapshotBeforeUpdate',props,state)
+                // 必须返回快照,回传给componentDidUpdate作为参数，或者null
+                // return null
+                return "hahah"
+            }
+
+            // 在组件更新之后
+            componentDidUpdate(preProps,preState,Snapshot){
+                console.log('Count---componentDidUpdate',Snapshot)
+            }
+
+            render(){
+                console.log('Count---render')
+                return(
+                    <div>
+                        <h2>当前累加的和为：{this.state.count}</h2>
+                        <button onClick={this.add}>点我+1</button>
+                        <button onClick={this.death}>卸载组件</button>
+                        <button onClick={this.force}>不修改状态，强制更新</button>
+                    </div>
+                )
+            }
+        }
+        // 渲染组件到真实页面
+        ReactDOM.render(<Count count={199}/>,document.getElementById("app"))
+    </script>
+
+</body>
+</html>

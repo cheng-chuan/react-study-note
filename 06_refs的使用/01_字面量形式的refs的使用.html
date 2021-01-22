@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字面量形式的refs的使用</title>
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Demo extends React.Component{
+            showLeftData=()=>{
+                alert(this.refs.input1.value)
+            }
+            showRightData=()=>{
+                const {input2} = this.refs
+                alert(input2.value)
+            }
+            render(){
+                return (
+                    // 此时的input1和input2都在组件实例对象的refs里，可通过this.refs获取
+                    <div>
+                        <input ref='input1' type="text" placeholder="请输入"/>&nbsp;
+                        <button onClick={this.showLeftData}>点我显示左侧数据</button> &nbsp;
+                        <input ref='input2' onBlur={this.showRightData} type="text" placeholder="请输入"/>   
+                    </div>
+                )
+            }
+        }
+
+        // 渲染真实页面
+        ReactDOM.render(<Demo/>,document.getElementById('app'))
+    </script>
+
+</body>
+</html>

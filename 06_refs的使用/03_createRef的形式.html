@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>createRef的形式</title>
+</head>
+<body>
+    <div id="app"></div>
+    
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 创建组件
+        class Demo extends React.Component{
+            // React.createRef调用后会返回一个容器，用来存储当前ref所标识的节点，属于'专人专用'--------React官网推荐
+            myRef = React.createRef()
+            myRef2 = React.createRef()
+
+            showLeftData=()=>{
+                alert(this.myRef.current.value)
+            }
+            showRightData=()=>{
+                alert(this.myRef2.current.value)
+            }
+            render(){
+                return (
+                    <div>
+                        <input ref={this.myRef} type="text" placeholder="请输入"/>&nbsp;
+                        <button onClick={this.showLeftData}>点我显示左侧数据</button> &nbsp;
+                        <input ref={this.myRef2} onBlur={this.showRightData} type="text" placeholder="请输入"/>   
+                    </div>
+                )
+            }
+        }
+
+        // 渲染真实页面
+        ReactDOM.render(<Demo/>,document.getElementById('app'))
+    </script>
+
+</body>
+</html>
